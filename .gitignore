@@ -1,0 +1,39 @@
+# Ignore Python bytecode
+*.pyc
+__pycache__/
+
+# Ignore Django migrations
+**/migrations/*
+
+# Ignore environment variables
+.env
+
+# Ignore virtual environments
+myvenv/
+# Ignore database
+*.sqlite3
+
+# Ignore static files
+staticfiles/
+static/
+
+# Ignore media files
+media/
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore macOS files
+.DS_Store
+
+# Ignore Windows files
+Thumbs.db
+
+# Ignore logs
+*.log
+
+# Ignore node_modules (if you use Node.js in your project)
+node_modules/
