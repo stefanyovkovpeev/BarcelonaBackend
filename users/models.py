@@ -10,7 +10,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     country = models.CharField(max_length=100)
     bio = models.TextField(blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     places_visited = models.IntegerField(default=0)
     looking_for = models.CharField(max_length=255, blank=True, null=True)
     diary_day_1 = models.TextField(blank=True, null=True)
@@ -20,3 +19,10 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f'{self.user.username} Profile'
+    
+class ProfilePhoto(models.Model):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='photos')
+    profile_picture = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
+
+    def __str__(self):
+        return f'Photo for {self.user_profile.user.username}'
