@@ -1,14 +1,17 @@
 from rest_framework import serializers
-from .models import User,UserProfile
+from .models import User,UserProfile,Visit
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-
+class VisitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Visit
+        fields = [ 'destination', 'visited_on', 'review']
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = [
-            'user', 'country', 'bio', 'places_visited',
+            'user', 'country', 'bio',
             'looking_for', 'diary_day_1', 'diary_day_2', 'diary_day_3', 'diary_day_4'
         ]
         read_only_fields = ['user']
