@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import CustomTokenObtainPairSerializer,RegisterUserSerializer,UserProfileSerializer,UserProfile,VisitSerializer,Visit
+from .serializers import CustomTokenObtainPairSerializer,RegisterUserSerializer,UserProfileSerializer,UserProfile,VisitSerializer,Visit,DestinationsSerializer,Destinations
 from django.shortcuts import render, redirect
 from .forms import ProfilePhotoForm
 from django.http import JsonResponse
@@ -125,3 +125,11 @@ class WeatherView(APIView):
             return Response(weather_data, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Could not fetch weather data'}, status=status.HTTP_400_BAD_REQUEST)
+        
+class DestinationsList(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        destinations=Destinations.objects.all()
+        serializer = DestinationsSerializer(destinations,many=True)
+        return Response(serializer.data)
+        

@@ -1,11 +1,19 @@
 from rest_framework import serializers
-from .models import User,UserProfile,Visit
+from .models import User,UserProfile,Visit,Destinations
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+class DestinationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Destinations
+        fields = ['destination','id']
+    
+
 class VisitSerializer(serializers.ModelSerializer):
+    destination_name = serializers.ReadOnlyField(source='destination.destination')
+
     class Meta:
         model = Visit
-        fields = [ 'destination', 'visited_on', 'review']
+        fields = ['destination', 'destination_name', 'visited_on', 'review']
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
