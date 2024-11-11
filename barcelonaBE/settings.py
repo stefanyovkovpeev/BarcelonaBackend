@@ -56,7 +56,16 @@ INSTALLED_APPS = [
     'chat',
     'rest_framework',
     'corsheaders',
+    'channels',
 ]
+
+ASGI_APPLICATION = 'barcelonaBE.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

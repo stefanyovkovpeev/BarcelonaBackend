@@ -6,6 +6,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = BotMessageSerializer
@@ -15,15 +17,32 @@ class MessageViewSet(viewsets.ModelViewSet):
         time_threshold = timezone.now() - timezone.timedelta(days=1)
         return Message.objects.filter(user=self.request.user, timestamp__gte=time_threshold).order_by('timestamp')
     
+import logging
+
+logger = logging.getLogger(__name__)
+
 class ChatMessagesViewSet(viewsets.ModelViewSet):
-    serializer_class=ChatMessageSerializer
+    serializer_class = ChatMessageSerializer
     permission_classes = [permissions.IsAuthenticated]
-     
+
     def get_queryset(self):
         time_threshold = timezone.now() - timezone.timedelta(days=1)
         return ChatMessage.objects.filter(timestamp__gte=time_threshold).order_by('timestamp')
-    
-    
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        
+
+        logger.info("Message saved and perform_create called with data: %s", serializer.data)
+
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "chat_room",
+            {
+                "type": "chat_message",
+                "message": serializer.data  
+            }
+        )
     
 class ChatBotResponseView(APIView):
     permission_classes = [permissions.IsAuthenticated]

@@ -6,6 +6,12 @@ class DestinationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Destinations
         fields = ['destination','id']
+        
+        
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name','last_name']
     
 
 class VisitSerializer(serializers.ModelSerializer):
