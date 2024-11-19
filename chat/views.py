@@ -17,9 +17,9 @@ class MessageViewSet(viewsets.ModelViewSet):
         time_threshold = timezone.now() - timezone.timedelta(days=1)
         return Message.objects.filter(user=self.request.user, timestamp__gte=time_threshold).order_by('timestamp')
     
-import logging
+# import logging
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 class ChatMessagesViewSet(viewsets.ModelViewSet):
     serializer_class = ChatMessageSerializer
